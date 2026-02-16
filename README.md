@@ -2,7 +2,7 @@ LocalCrypt
 
 Lightweight, local-first encryption tool that runs entirely in the browser using the Web Crypto API. No data leaves your device.
 
-**Try it live:** [Live Demo]()
+**Try it live:** [Live Demo](https://maggooo.github.io/Quiet-Cipher-/)
 
 Preview
 ![LocalCrypt Screenshot](screenshot.png)
