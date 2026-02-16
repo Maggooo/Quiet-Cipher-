@@ -69,9 +69,6 @@ To use locally:
 - Clone the repository
 - Open "index.html" in a modern browser
 
-Optional:
-You can enable GitHub Pages to host the tool as a static static site.
-
 ---
 
 License
