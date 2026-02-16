@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Encryptor</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 700px;
+    animation: slideUp 0.5s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 35px;
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  .security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #10b981;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+  .section {
+    margin-bottom: 28px;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .input-group {
+    position: relative;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: white;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 140px;
+    font-family: 'Courier New', monospace;
+    line-height: 1.6;
+  }
+
+  .key-input-wrapper {
+    position: relative;
+  }
+
+  .key-input {
+    padding-right: 50px;
+  }
+
+  .toggle-key {
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 18px;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .toggle-key:hover {
+    color: #667eea;
+  }
+
+  .button-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  button {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-secondary {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+  }
+
+  .btn-secondary:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .btn-success {
+    background: #10b981;
+    color: white;
+  }
+
+  .btn-success:hover {
+    background: #059669;
+    transform: translateY(-2px);
+  }
+
+  .btn-danger {
+    background: #ef4444;
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+  }
+
+  .btn-primary.btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  }
+
+  .btn-primary.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  }
+
+  .status {
+    min-height: 24px;
+    margin-top: 8px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+  }
+
+  .status.success {
+    color: #10b981;
+  }
+
+  .status.error {
+    color: #ef4444;
+  }
+
+  .status.info {
+    color: #667eea;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+    margin: 30px 0;
+  }
+
+  .info-box {
+    background: #f1f5f9;
+    border-left: 4px solid #667eea;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.6;
+    margin-top: 20px;
+  }
+
+  .info-box strong {
+    color: #1e293b;
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      padding: 24px;
+    }
+
+    h1 {
+      font-size: 26px;
+    }
+
+    .button-row {
+      flex-direction: column;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .icon {
+    font-style: normal;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>🔐 Secure Encryptor</h1>
+    <p class="subtitle">Client-side AES-GCM encryption</p>
+    <span class="security-badge">
+      <span class="icon">✓</span> Zero-knowledge encryption
+    </span>
+  </div>
+
+  <div class="section">
+    <label>Encryption Key</label>
+    <div class="key-input-wrapper">
+      <input type="password" id="key" class="key-input" placeholder="Enter key or generate one">
+      <button class="toggle-key" id="toggleKey" title="Show/Hide key">👁️</button>
+    </div>
+    <div class="button-row" style="margin-top: 12px;">
+      <button class="btn-primary" id="generateBtn">
+        <span class="icon">🎲</span> Generate
+      </button>
+      <button class="btn-secondary" id="copyKeyBtn">
+        <span class="icon">📋</span> Copy
+      </button>
+    </div>
+    <div id="keyStatus" class="status"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <label>Message</label>
+    <textarea id="message" placeholder="Type or paste your message here..."></textarea>
+  </div>
+
+  <div class="button-row">
+    <button class="btn-primary" id="processBtn">
+      <span class="icon" id="processBtnIcon">🔄</span>
+      <span id="processBtnText">Process</span>
+    </button>
+  </div>
+  <div id="processHint" class="status info"></div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <label>Output</label>
+    <textarea id="output" readonly placeholder="Result will appear here..."></textarea>
+    <div class="button-row" style="margin-top: 12px;">
+      <button class="btn-secondary" id="copyOutputBtn">
+        <span class="icon">📋</span> Copy Output
+      </button>
+      <button class="btn-secondary" id="clearBtn">
+        <span class="icon">🗑️</span> Clear All
+      </button>
+    </div>
+    <div id="outputStatus" class="status"></div>
+  </div>
+
+  <div class="info-box">
+    <strong>How it works:</strong> This tool uses AES-GCM (256-bit) encryption, a military-grade standard. All encryption happens locally in your browser - no data is ever sent to any server. Your key is derived using PBKDF2 with 100,000 iterations for maximum security.
+  </div>
+</div>
+
+<script>
+// AES-GCM Encryption with Web Crypto API
+class SecureEncryption {
+  constructor() {
+    this.encoder = new TextEncoder();
+    this.decoder = new TextDecoder();
+  }
+
+  async deriveKey(password, salt) {
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw',
+      this.encoder.encode(password),
+      'PBKDF2',
+      false,
+      ['deriveBits', 'deriveKey']
+    );
+
+    return crypto.subtle.deriveKey(
+      {
+        name: 'PBKDF2',
+        salt: salt,
+        iterations: 100000,
+        hash: 'SHA-256'
+      },
+      keyMaterial,
+      { name: 'AES-GCM', length: 256 },
+      true,
+      ['encrypt', 'decrypt']
+    );
+  }
+
+  async encrypt(text, password) {
+    try {
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await this.deriveKey(password, salt);
+
+      const encrypted = await crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv: iv },
+        key,
+        this.encoder.encode(text)
+      );
+
+      const combined = new Uint8Array(salt.length + iv.length + encrypted.byteLength);
+      combined.set(salt, 0);
+      combined.set(iv, salt.length);
+      combined.set(new Uint8Array(encrypted), salt.length + iv.length);
+
+      return btoa(String.fromCharCode(...combined));
+    } catch (error) {
+      throw new Error('Encryption failed: ' + error.message);
+    }
+  }
+
+  async decrypt(ciphertext, password) {
+    try {
+      const combined = new Uint8Array(
+        atob(ciphertext).split('').map(c => c.charCodeAt(0))
+      );
+
+      const salt = combined.slice(0, 16);
+      const iv = combined.slice(16, 28);
+      const encrypted = combined.slice(28);
+
+      const key = await this.deriveKey(password, salt);
+
+      const decrypted = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: iv },
+        key,
+        encrypted
+      );
+
+      return this.decoder.decode(decrypted);
+    } catch (error) {
+      throw new Error('Decryption failed: Invalid key or corrupted data');
+    }
+  }
+
+  isEncrypted(text) {
+    // Check if text looks like base64 encrypted data
+    if (!text || text.length === 0) return false;
+    
+    // Must be base64
+    const base64Regex = /^[A-Za-z0-9+/]+={0,2}$/;
+    if (!base64Regex.test(text)) return false;
+    
+    // Try to decode and check structure
+    try {
+      const decoded = atob(text);
+      // Our encrypted format: 16 bytes salt + 12 bytes IV + encrypted data
+      // Minimum length should be at least 28 bytes + some encrypted content
+      return decoded.length >= 32;
+    } catch {
+      return false;
+    }
+  }
+
+  generateSecureKey() {
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+}
+
+// UI Controller
+class EncryptorUI {
+  constructor() {
+    this.encryption = new SecureEncryption();
+    this.elements = {
+      key: document.getElementById('key'),
+      message: document.getElementById('message'),
+      output: document.getElementById('output'),
+      keyStatus: document.getElementById('keyStatus'),
+      outputStatus: document.getElementById('outputStatus'),
+      toggleKey: document.getElementById('toggleKey'),
+      generateBtn: document.getElementById('generateBtn'),
+      copyKeyBtn: document.getElementById('copyKeyBtn'),
+      processBtn: document.getElementById('processBtn'),
+      processBtnIcon: document.getElementById('processBtnIcon'),
+      processBtnText: document.getElementById('processBtnText'),
+      processHint: document.getElementById('processHint'),
+      copyOutputBtn: document.getElementById('copyOutputBtn'),
+      clearBtn: document.getElementById('clearBtn')
+    };
+
+    this.initEventListeners();
+    this.loadFromLocalStorage();
+  }
+
+  initEventListeners() {
+    this.elements.toggleKey.addEventListener('click', () => this.toggleKeyVisibility());
+    this.elements.generateBtn.addEventListener('click', () => this.generateKey());
+    this.elements.copyKeyBtn.addEventListener('click', () => this.copyKey());
+    this.elements.processBtn.addEventListener('click', () => this.processMessage());
+    this.elements.copyOutputBtn.addEventListener('click', () => this.copyOutput());
+    this.elements.clearBtn.addEventListener('click', () => this.clearAll());
+
+    // Auto-save to localStorage
+    this.elements.key.addEventListener('input', () => this.saveToLocalStorage());
+    this.elements.message.addEventListener('input', () => {
+      this.saveToLocalStorage();
+      this.updateProcessButton();
+    });
+
+    // Initial button state
+    this.updateProcessButton();
+  }
+
+  updateProcessButton() {
+    const message = this.elements.message.value;
+    const isEncrypted = this.encryption.isEncrypted(message);
+    
+    if (!message) {
+      this.elements.processBtnIcon.textContent = '🔄';
+      this.elements.processBtnText.textContent = 'Process';
+      this.elements.processBtnIcon.style.transform = 'rotate(0deg)';
+      this.elements.processHint.textContent = '';
+      return;
+    }
+
+    if (isEncrypted) {
+      this.elements.processBtnIcon.textContent = '🔓';
+      this.elements.processBtnText.textContent = 'Decrypt';
+      this.elements.processBtn.className = 'btn-primary btn-danger';
+      this.elements.processHint.textContent = '💡 Encrypted message detected';
+    } else {
+      this.elements.processBtnIcon.textContent = '🔒';
+      this.elements.processBtnText.textContent = 'Encrypt';
+      this.elements.processBtn.className = 'btn-primary btn-success';
+      this.elements.processHint.textContent = '💡 Plain text detected';
+    }
+  }
+
+  toggleKeyVisibility() {
+    const input = this.elements.key;
+    const btn = this.elements.toggleKey;
+    
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      btn.textContent = '👁️';
+    }
+  }
+
+  generateKey() {
+    const key = this.encryption.generateSecureKey();
+    this.elements.key.value = key;
+    this.showStatus('keyStatus', '✓ Secure key generated (256-bit)', 'success');
+    this.saveToLocalStorage();
+  }
+
+  async copyKey() {
+    const key = this.elements.key.value;
+    if (!key) {
+      this.showStatus('keyStatus', '⚠ No key to copy', 'error');
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(key);
+      this.showStatus('keyStatus', '✓ Key copied to clipboard', 'success');
+    } catch (error) {
+      this.showStatus('keyStatus', '✗ Failed to copy', 'error');
+    }
+  }
+
+  async processMessage() {
+    const key = this.elements.key.value;
+    const message = this.elements.message.value;
+
+    if (!key) {
+      this.showStatus('outputStatus', '⚠ Please enter or generate a key', 'error');
+      return;
+    }
+
+    if (!message) {
+      this.showStatus('outputStatus', '⚠ Please enter a message', 'error');
+      return;
+    }
+
+    const isEncrypted = this.encryption.isEncrypted(message);
+
+    if (isEncrypted) {
+      // Decrypt
+      try {
+        this.showStatus('outputStatus', '⏳ Decrypting...', 'info');
+        const decrypted = await this.encryption.decrypt(message, key);
+        this.elements.output.value = decrypted;
+        this.showStatus('outputStatus', '✓ Message decrypted successfully', 'success');
+      } catch (error) {
+        this.showStatus('outputStatus', '✗ ' + error.message, 'error');
+      }
+    } else {
+      // Encrypt
+      try {
+        this.showStatus('outputStatus', '⏳ Encrypting...', 'info');
+        const encrypted = await this.encryption.encrypt(message, key);
+        this.elements.output.value = encrypted;
+        this.showStatus('outputStatus', '✓ Message encrypted successfully', 'success');
+      } catch (error) {
+        this.showStatus('outputStatus', '✗ ' + error.message, 'error');
+      }
+    }
+  }
+
+  async copyOutput() {
+    const output = this.elements.output.value;
+    if (!output) {
+      this.showStatus('outputStatus', '⚠ Nothing to copy', 'error');
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(output);
+      this.showStatus('outputStatus', '✓ Copied to clipboard', 'success');
+    } catch (error) {
+      this.showStatus('outputStatus', '✗ Failed to copy', 'error');
+    }
+  }
+
+  clearAll() {
+    this.elements.message.value = '';
+    this.elements.output.value = '';
+    this.elements.keyStatus.textContent = '';
+    this.elements.outputStatus.textContent = '';
+    this.elements.processHint.textContent = '';
+    this.updateProcessButton();
+    this.saveToLocalStorage();
+  }
+
+  showStatus(elementId, message, type) {
+    const element = this.elements[elementId];
+    element.textContent = message;
+    element.className = `status ${type}`;
+    
+    setTimeout(() => {
+      element.textContent = '';
+      element.className = 'status';
+    }, 3000);
+  }
+
+  saveToLocalStorage() {
+    try {
+      localStorage.setItem('encryptor_key', this.elements.key.value);
+      localStorage.setItem('encryptor_message', this.elements.message.value);
+    } catch (error) {
+      console.error('Failed to save to localStorage:', error);
+    }
+  }
+
+  loadFromLocalStorage() {
+    try {
+      const savedKey = localStorage.getItem('encryptor_key');
+      const savedMessage = localStorage.getItem('encryptor_message');
+      
+      if (savedKey) this.elements.key.value = savedKey;
+      if (savedMessage) this.elements.message.value = savedMessage;
+      
+      this.updateProcessButton();
+    } catch (error) {
+      console.error('Failed to load from localStorage:', error);
+    }
+  }
+}
+
+// Initialize the app
+const app = new EncryptorUI();
+</script>
+
+</body>
+</html>
